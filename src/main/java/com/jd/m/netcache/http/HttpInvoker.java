@@ -1,7 +1,5 @@
 package com.jd.m.netcache.http;
 
-import java.net.URLEncoder;
-
 import com.jd.m.netcache.NetEntity;
 import com.jd.m.netcache.NetInvoker;
 

@@ -3,12 +3,18 @@ package com.jd.m.netcache;
 import java.io.Serializable;
 import java.util.concurrent.*;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * 执行远程请求抽象类
  *
  * @author zhulx
  */
 public abstract class NetInvoker implements Runnable {
+
+    private static final Log log = LogFactory.getLog(NetInvoker.class);
+
     /**
      * 缓存结果集
      */
@@ -56,16 +62,15 @@ public abstract class NetInvoker implements Runnable {
     public void run() {
         while (true) {
             try {
-                if (!Thread.interrupted()) {
-                    // 从队列中取出一个任务
-                    NetEntity task = queue.take();
-                    // 设置返回结果
-                    task.setResult(invoke(task));
-                    // 通知等待线程
-                    task.getLatch().countDown();
-                }
+                // 从队列中取出一个任务
+                NetEntity task = queue.take();
+                // 设置返回结果
+                task.setResult(invoke(task));
+                // 通知等待线程
+                task.getLatch().countDown();
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+                // 线程被中断重新处理
+                log.error("NetInvoker Thread is interrupted", e);
             }
         }
     }
