@@ -48,11 +48,21 @@ public abstract class NetEntity {
                 log.info(Thread.currentThread().getName() + ": NetEntity get");
             }
             if (semaphore.tryAcquire()) {
-                if (log.isInfoEnabled()) {
-                    log.info(Thread.currentThread().getName() + ": NetEntity await");
-                }
-                Thread.sleep(keepAlive);
-                invoker.getCachedMap().remove(this);
+                invoker.getPool().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (log.isInfoEnabled()) {
+                            log.info(Thread.currentThread().getName() + ": NetEntity await");
+                        }
+                        try {
+                            Thread.sleep(keepAlive);
+                        } catch (Exception e) {
+                            log.error("NetEntity wait error!", e);
+                        }
+
+                        invoker.getCachedMap().remove(NetEntity.this);
+                    }
+                });
             }
             if (log.isInfoEnabled()) {
                 log.info(Thread.currentThread().getName() + ": NetEntity return");

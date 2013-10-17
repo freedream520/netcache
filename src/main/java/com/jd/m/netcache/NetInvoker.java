@@ -110,6 +110,10 @@ public abstract class NetInvoker<T extends NetEntity> implements Runnable {
         pool.execute(this);
     }
 
+    public ExecutorService getPool() {
+        return pool;
+    }
+
     public void setPool(ExecutorService pool) {
         this.pool = pool;
     }
