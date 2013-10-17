@@ -29,11 +29,11 @@ public abstract class NetEntity {
 
     private Serializable result;
 
-    private long awaitTimeout = 5000L;
+    private long awaitTimeout = 5L;
 
     private long keepAlive = 5000L;
 
-    private NetInvoker invoke;
+    private NetInvoker invoker;
 
     /**
      * 获取请求的数据，在请求执行完毕之前会一直阻塞，直到请求返回，在所有等待请求返回的线程都获得了请求结果之后，
@@ -52,7 +52,7 @@ public abstract class NetEntity {
                     log.info(Thread.currentThread().getName() + ": NetEntity await");
                 }
                 Thread.sleep(keepAlive);
-                invoke.getCachedMap().remove(this);
+                invoker.getCachedMap().remove(this);
             }
             if (log.isInfoEnabled()) {
                 log.info(Thread.currentThread().getName() + ": NetEntity return");
@@ -73,8 +73,8 @@ public abstract class NetEntity {
         this.result = result;
     }
 
-    public void setInvoke(NetInvoker invoke) {
-        this.invoke = invoke;
+    public void setInvoker(NetInvoker invoker) {
+        this.invoker = invoker;
     }
 
     public void setAwaitTimeout(long awaitTimeout) {

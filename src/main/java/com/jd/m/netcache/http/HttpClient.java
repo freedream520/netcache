@@ -123,7 +123,7 @@ public class HttpClient {
     }
 
     /**
-     * http的post请求
+     * http的post请求，请求参数是流的形式
      *
      * @param uri
      *         请求地址
@@ -131,8 +131,10 @@ public class HttpClient {
      *         请求内容
      * @return 响应内容
      */
-    public String post(String uri, String content) {
-        System.out.println("post start ");
+    public String postStream(String uri, String content) {
+        if (log.isInfoEnabled()) {
+            log.info("postStream start... ");
+        }
         long start = System.currentTimeMillis();
         String result = null;
         try {
@@ -160,7 +162,7 @@ public class HttpClient {
     }
 
     /**
-     * http的post请求
+     * http的post请求，请求参数是application/x-www-form-urlencoded的
      *
      * @param uri
      *         请求地址
@@ -168,8 +170,10 @@ public class HttpClient {
      *         请求内容
      * @return 响应内容
      */
-    public String post2(String uri, String content) {
-        System.out.println("post start ");
+    public String postForm(String uri, String content) {
+        if (log.isInfoEnabled()) {
+            log.info("postForm start... ");
+        }
         long start = System.currentTimeMillis();
         String result = null;
         try {
@@ -205,7 +209,9 @@ public class HttpClient {
      * @return 请求结果
      */
     public String get(String url, String respDecode) {
-        System.out.println("get start...");
+        if (log.isInfoEnabled()) {
+            log.info("get start... ");
+        }
         long start = System.currentTimeMillis();
         String result = null;
         if (null == respDecode) {
